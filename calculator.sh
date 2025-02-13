@@ -1,4 +1,4 @@
-# !/bin/bash
+#!/bin/bash
 # A simple calculator shell program
 
 echo "1. Addition"
