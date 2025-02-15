@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    triggers { 
+      githubPush() // Trigger pipeline on a GitHub push event 
+   }
     environment {
         DOCKER_IMAGE_NAME = 'calculator'
         GITHUB_REPO_URL = 'https://github.com/BThangaraju/calculator.git'
