@@ -38,17 +38,18 @@ pipeline {
             }
         }
 
-   stage('Run Ansible Playbook') {
-            steps {
-                sh 'export ANSIBLE_HOST_KEY_CHECKING=False' 
-                script {
-                    ansiblePlaybook(
-                        playbook: 'deploy.yml',
-                        inventory: 'inventory'
-                     )
-                }
+     stage('Run Ansible Playbook') { 
+        steps {
+            script {
+              withEnv(["ANSIBLE_HOST_KEY_CHECKING=False"]) {   
+                ansiblePlaybook(
+                    playbook: 'deploy.yml',
+                    inventory: 'inventory'
+                )
             }
         }
+    }
+}
 
     }
 }
