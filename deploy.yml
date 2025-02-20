@@ -7,8 +7,8 @@
 
     - name: Install Python Docker SDK
       pip:
-        name: docker
-        executable: pip3
+        name: python3-docker
+        state: present
 
     - name: Pull Docker Image
       docker_image:
