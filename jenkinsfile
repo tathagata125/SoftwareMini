@@ -43,7 +43,7 @@ pipeline {
                  }
             }
         }
-        tage('Run Ansible Playbook') {
+        stage('Run Ansible Playbook') {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'sudo-password', variable: 'SUDO_PASSWORD')]) {
