@@ -50,7 +50,6 @@ pipeline {
         }
     }
 }
-
 post {
         success {
             mail to: 'b.thangaraju@iiitb.ac.in',
