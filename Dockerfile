@@ -16,5 +16,5 @@ COPY calculator.sh /app/
 RUN chmod +x /app/calculator.sh
 
 # Set the default command to execute calculator.sh
-# CMD ["bash", "/app/calculator.sh"]
-CMD ["./calculator.sh"]
+ CMD ["bash", "/app/calculator.sh"]
+
