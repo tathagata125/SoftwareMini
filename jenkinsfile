@@ -34,7 +34,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('', 'DockerHubCred') {
+                     withDockerRegistry([credentialsId: 'DockerHubCred']){
                         sh "docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_HUB_REPO}:latest"
                         sh "docker push ${DOCKER_HUB_REPO}:latest"
                     }
