@@ -43,19 +43,25 @@ pipeline {
                  }
             }
         }
-        stage('Run Ansible Playbook') {
+       stage('Run Ansible Playbook') {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'sudo-password', variable: 'SUDO_PASSWORD')]) {
+                        // Write the inventory file dynamically
+                        writeFile file: 'inventory', text: """
+                            localhost ansible_connection=local ansible_user=tathagata ansible_become_pass='${SUDO_PASSWORD}'
+                        """
+
+                        // Run the Ansible playbook
                         ansiblePlaybook(
                             playbook: 'deploy.yml',
-                            inventory: 'inventory',
-                            extras: "--extra-vars 'ansible_become_password=${SUDO_PASSWORD}'"
+                            inventory: 'inventory'
                         )
                     }
                 }
             }
         }
+
     }
 }
 
