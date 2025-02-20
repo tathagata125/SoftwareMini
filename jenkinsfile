@@ -9,7 +9,7 @@ pipeline {
         DOCKER_IMAGE_NAME = 'calculator'
         DOCKER_HUB_REPO = 'tathagata125/calculator'
         GITHUB_REPO_URL = 'https://github.com/tathagata125/SoftwareMini.git'
-        DOCKER_HUB_CREDENTIALS = credentials('DockerHubCred')
+        
     }
 
     stages {
@@ -35,11 +35,9 @@ pipeline {
         stage('Push Docker Images') {
             steps {
                 script{
-                    sh "echo ${DOCKER_HUB_CREDENTIALS_PSW} | docker login -u ${DOCKER_HUB_CREDENTIALS_USR} --password-stdin"
-
-                    // Tag and push the Docker image
-                    sh "docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_HUB_REPO}:latest"
-                    sh "docker push ${DOCKER_HUB_REPO}:latest"
+                    docker.withRegistry('', 'DockerHubCred') {
+                    sh 'docker tag calculator tathagata125/calculator:latest'
+                    sh 'docker push tathagata125/calculator'
                     }
                  }
             }
