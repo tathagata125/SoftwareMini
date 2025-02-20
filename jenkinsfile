@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_NAME = 'calculator'
-        DOCKER_HUB_REPO = 'tathagata125/calculator'
+        DOCKER_HUB_REPO = 'tathagata125/calculator:latest'
         GITHUB_REPO_URL = 'https://github.com/tathagata125/SoftwareMini.git'
     }
 
@@ -35,8 +35,41 @@ pipeline {
             steps {
                 script {
                      withDockerRegistry([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]){
-                        sh "docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_HUB_REPO}:latest"
-                        sh "docker push ${DOCKER_HUB_REPO}:latest"
+                        pipeline {
+    agent any
+    environment {
+        DOCKER_IMAGE = "akdev6298/mycalculator:v1"
+    }
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Shahakshar/DevCalculator.git'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t devcalculator .'
+            }
+        }
+        stage('Verify Docker image') {
+            steps {
+                sh 'docker images'
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                     sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin'
+                    sh 'docker tag devcalculator $DOCKER_IMAGE'
+                    sh 'docker images'
+                    sh 'docker push $DOCKER_IMAGE'
+                }
+            }
+        }
+    }
+}
+                        sh "docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_HUB_REPO}"
+                        sh "docker push ${DOCKER_HUB_REPO}"
                     }
                 }
             }
