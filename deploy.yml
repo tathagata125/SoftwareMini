@@ -9,6 +9,7 @@
       pip:
         name: python3-docker
         state: present
+        update_cache: yes
 
     - name: Pull Docker Image
       docker_image:
