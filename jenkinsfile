@@ -49,6 +49,7 @@ pipeline {
             }
         }
     }
+ }
 }
 post {
         success {
@@ -66,3 +67,4 @@ post {
         }
       }
     }
+
