@@ -43,13 +43,16 @@ pipeline {
                  }
             }
         }
-        stage('Run Ansible Playbook') {
+        tage('Run Ansible Playbook') {
             steps {
                 script {
-                    ansiblePlaybook(
-                        playbook: 'deploy.yml',
-                        inventory: 'inventory'
-                     )
+                    withCredentials([string(credentialsId: 'sudo-password', variable: 'SUDO_PASSWORD')]) {
+                        ansiblePlaybook(
+                            playbook: 'deploy.yml',
+                            inventory: 'inventory',
+                            extras: "--extra-vars 'ansible_become_password=${SUDO_PASSWORD}'"
+                        )
+                    }
                 }
             }
         }
