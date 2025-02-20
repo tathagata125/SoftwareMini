@@ -1,10 +1,13 @@
 pipeline {
     agent any
+
     triggers { 
-      githubPush() 
-   }
+        githubPush()  
+    }
+
     environment {
         DOCKER_IMAGE_NAME = 'calculator'
+        DOCKER_HUB_REPO = 'tathagata125/calculator'
         GITHUB_REPO_URL = 'https://github.com/tathagata125/SoftwareMini.git'
     }
 
@@ -12,7 +15,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    // Checkout the code from the GitHub repository
+                    // Clone GitHub repo
                     git branch: 'main', url: "${GITHUB_REPO_URL}"
                 }
             }
@@ -21,50 +24,50 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build Docker image
+                    // Build Docker image using Dockerfile
                     docker.build("${DOCKER_IMAGE_NAME}", '.')
                 }
             }
         }
 
-        stage('Push Docker Images') {
+        stage('Push Docker Image') {
             steps {
-                script{
+                script {
                     docker.withRegistry('', 'DockerHubCred') {
-                    sh 'docker tag calculator tathagata125/calculator:latest'
-                    sh 'docker push tathagata125/calculator'
+                        sh 'docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_HUB_REPO}:latest'
+                        sh 'docker push ${DOCKER_HUB_REPO}:latest'
                     }
-                 }
+                }
             }
         }
 
-     stage('Run Ansible Playbook') { 
-        steps {
-            script {
-              withEnv(["ANSIBLE_HOST_KEY_CHECKING=False"]) {   
-                ansiblePlaybook(
-                    playbook: 'deploy.yml',
-                    inventory: 'inventory'
-                )
+        stage('Run Ansible Playbook') { 
+            steps {
+                script {
+                    withEnv(["ANSIBLE_HOST_KEY_CHECKING=False"]) {   
+                        ansiblePlaybook(
+                            playbook: 'deploy.yml',
+                            inventory: 'inventory'
+                        )
+                    }
+                }
             }
         }
     }
- }
-}
- post {
+
+    post {
         success {
             mail to: 'bukandas93@gmail.com',
-                 subject: "Application Deployment SUCCESS: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "The build was successful!"
+                subject: "Application Deployment SUCCESS: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "The build was successful!"
         }
         failure {
             mail to: 'bukandas93@gmail.com',
-                 subject: "Application Deployment FAILURE: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "The build failed."
+                subject: "Application Deployment FAILURE: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "The build failed."
         }
         always {
             cleanWs()
         }
-      }
     }
-
+}
