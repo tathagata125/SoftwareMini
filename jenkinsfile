@@ -51,7 +51,7 @@ pipeline {
     }
  }
 }
-post {
+ post {
         success {
             mail to: 'b.thangaraju@iiitb.ac.in',
                  subject: "Application Deployment SUCCESS: Build ${env.JOB_NAME} #${env.BUILD_NUMBER}",
