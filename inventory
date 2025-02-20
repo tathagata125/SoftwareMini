@@ -1,2 +1,2 @@
-localhost ansible_connection=local ansible_user=tathagata ansible_become_pass='your_sudo_password'
+localhost ansible_connection=local ansible_user=tathagata ansible_become_pass="''''"
 
