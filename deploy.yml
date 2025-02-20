@@ -2,7 +2,7 @@
 - name: Pull Docker Image from Docker Hub
   hosts: localhost
   remote_user: tathagata
-  become: false
+  become: true  # Run tasks with elevated privileges
   tasks:
     - name: Ensure Python3 and Pip are installed
       apt:
