@@ -4,12 +4,18 @@
   remote_user: tathagata
   become: false
   tasks:
-
-    - name: Install Python Docker SDK
-      pip:
-        name: python3-docker
+    - name: Ensure Python3 and Pip are installed
+      apt:
+        name:
+          - python3
+          - python3-pip
         state: present
         update_cache: yes
+
+    - name: Install Docker Python SDK
+      pip:
+        name: docker
+        executable: pip3
 
     - name: Pull Docker Image
       docker_image:
@@ -20,11 +26,16 @@
     - name: Display Docker Pull Result
       debug:
         var: docker_pull_result
-        
-    - name: Start Docker service
+
+    - name: Ensure Docker service is running
       service:
         name: docker
         state: started
 
-    - name: Running container
-      shell: docker run -it -d --name calculator tathagata125/calculator /bin/bash
+    - name: Run Docker container
+      docker_container:
+        name: calculator
+        image: tathagata125/calculator
+        state: started
+        detach: true
+        command: /bin/bash
