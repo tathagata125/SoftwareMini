@@ -49,7 +49,7 @@ pipeline {
                     withCredentials([string(credentialsId: 'sudo-password', variable: 'SUDO_PASSWORD')]) {
                         // Write the inventory file dynamically
                         writeFile file: 'inventory', text: """
-                            localhost ansible_connection=local ansible_user=tathagata ansible_become_pass='${SUDO_PASSWORD}'
+                            localhost ansible_connection=ssh ansible_user=tathagata ansible_ssh_pass='${SUDO_PASSWORD}'
                         """
 
                         // Run the Ansible playbook
