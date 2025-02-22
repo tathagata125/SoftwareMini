@@ -38,7 +38,7 @@ pipeline {
                     withCredentials([string(credentialsId: 'DockerHubCred', variable: 'DOCKER_HUB_PASSWORD')]) {
                     sh "echo '${DOCKER_HUB_PASSWORD}' | docker login -u 'tathagata125' --password-stdin"
                     sh 'docker tag calculator tathagata125/calculator:latest'
-                    sh 'docker push tathagata125/calculator'
+                    sh 'docker push tathagata125/calculator:latest'
                     }
                  }
             }
