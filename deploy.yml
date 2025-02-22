@@ -32,5 +32,10 @@
         name: docker
         state: started
 
-    - name: Running container
-      shell: docker run -it -d --name calculator tathagata125/calculator java \ScientificCalculator
+    - name: Run Docker container
+      docker_container:
+        name: calculator
+        image: tathagata125/calculator
+        state: started
+        detach: true
+        command: java \ScientificCalculator
