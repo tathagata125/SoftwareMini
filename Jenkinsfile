@@ -46,11 +46,8 @@ pipeline {
        stage('Run Ansible Playbook') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'sudo-password', variable: 'SUDO_PASSWORD')]) {
+                    withEnv(["ANSIBLE_HOST_KEY_CHECKING=False"]) {
                         // Write the inventory file dynamically
-                        writeFile file: 'inventory', text: """
-                            localhost ansible_connection=ssh ansible_user=tathagata ansible_ssh_pass='${SUDO_PASSWORD}'
-                        """
 
                         // Run the Ansible playbook
                         ansiblePlaybook(
