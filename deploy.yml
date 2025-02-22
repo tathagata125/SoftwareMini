@@ -38,4 +38,4 @@
         image: tathagata125/calculator
         state: started
         detach: true
-        command: java \ScientificCalculator
+        command: java ScientificCalculator
