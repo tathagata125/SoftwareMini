@@ -2,20 +2,20 @@
 - name: Pull Docker Image from Docker Hub
   hosts: localhost
   remote_user: tathagata
-  become: true  # Run tasks with elevated privileges
+  become: false
   tasks:
-    - name: Ensure Python3 and Pip are installed
-      apt:
-        name:
-          - python3
-          - python3-pip
-        state: present
-        update_cache: yes
-
-    - name: Install Docker Python SDK
-      pip:
-        name: docker
-        executable: pip3
+#    - name: Ensure Python3 and Pip are installed
+#      apt:
+#        name:
+#          - python3
+#          - python3-pip
+#        state: present
+#        update_cache: yes
+#
+#    - name: Install Docker Python SDK
+#      pip:
+#        name: docker
+#        executable: pip3
 
     - name: Pull Docker Image
       docker_image:
