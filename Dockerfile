@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-FROM openjdk:latest
+FROM openjdk:11-jdk
 # Install dos2unix utility
 RUN apt-get update && apt-get install -y dos2unix
 
@@ -16,5 +16,5 @@ COPY ScientificCalculator.java /app/
 RUN javac /app/ScientificCalculator.java
 
 # Set the default command to execute ScientificCalculator.java
- ENTRYPOINT ["java", "/app/calculator.sh"]
+ ENTRYPOINT ["java", "/app/ScientificCalculator"]
 
