@@ -37,5 +37,7 @@
         name: calculator
         image: tathagata125/calculator
         state: started
+        tty: true
+        interactive: true
         detach: true
         command: java ScientificCalculator
